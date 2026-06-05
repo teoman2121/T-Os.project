@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T_Os Linux — Senin için tasarlandı</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #161b27;
+  --bg3: #1e2535;
+  --border: rgba(255,255,255,0.08);
+  --text: #e8eaf0;
+  --muted: #7a8099;
+  --blue: #4d8ef0;
+  --blue-dim: #1e3a6e;
+  --teal: #30c9a0;
+  --teal-dim: #0d4035;
+  --amber: #f0a830;
+  --amber-dim: #4a3010;
+  --red: #e05555;
+  --red-dim: #3d1515;
+  --accent: #5e7cf5;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: rgba(15,17,23,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 0.5px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-logo-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--teal);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.5; transform:scale(1.3); }
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(78,110,240,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(78,110,240,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black, transparent);
+}
+
+.hero-glow {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(78,110,240,0.12) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -60%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 13px;
+  color: var(--teal);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.6s ease both;
+}
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  color: #fff;
+  max-width: 800px;
+  animation: fadeUp 0.7s ease 0.1s both;
+}
+
+.hero h1 span {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--accent);
+}
+
+.hero-desc {
+  max-width: 520px;
+  color: var(--muted);
+  font-size: 18px;
+  margin: 1.5rem auto;
+  font-weight: 300;
+  animation: fadeUp 0.7s ease 0.2s both;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeUp 0.7s ease 0.3s both;
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 15px;
+  border: 0.5px solid var(--border);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-ghost:hover { background: var(--bg3); }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* TAGS SCROLL */
+.tags-scroll {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
+  animation: fadeUp 0.7s ease 0.4s both;
+}
+
+.tag {
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tag svg { width:14px; height:14px; flex-shrink:0; }
+
+/* SECTIONS */
+section {
+  padding: 6rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--teal);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin-bottom: 1rem;
+}
+
+.section-sub {
+  color: var(--muted);
+  font-size: 17px;
+  max-width: 540px;
+  font-weight: 300;
+}
+
+/* FEATURE CARDS */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-top: 3rem;
+}
+
+.feature-card {
+  background: var(--bg2);
+  padding: 2rem;
+  transition: background 0.2s;
+  position: relative;
+}
+.feature-card:hover { background: var(--bg3); }
+
+.feature-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  font-size: 20px;
+}
+
+.icon-blue { background: var(--blue-dim); }
+.icon-teal { background: var(--teal-dim); }
+.icon-amber { background: var(--amber-dim); }
+.icon-red { background: var(--red-dim); }
+
+.feature-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* BIG FEATURE BLOCKS */
+.big-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.big-block.reverse { direction: rtl; }
+.big-block.reverse > * { direction: ltr; }
+
+.mock-screen {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.mock-bar {
+  background: var(--bg3);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 0.5px solid var(--border);
+}
+
+.mock-dot { width:10px; height:10px; border-radius:50%; }
+.mock-content { padding: 1.5rem; }
+
+.terminal-line {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 2;
+}
+.t-prompt { color: var(--teal); }
+.t-cmd { color: var(--text); }
+.t-out { color: var(--muted); }
+.t-ok { color: var(--teal); }
+.t-warn { color: var(--amber); }
+.t-err { color: var(--red); }
+
+/* APPS GRID */
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  margin-top: 3rem;
+}
+
+.app-card {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: default;
+}
+.app-card:hover {
+  border-color: rgba(255,255,255,0.18);
+  background: var(--bg3);
+}
+
+.app-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+  display: block;
+}
+.app-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  display: block;
+}
+.app-cat {
+  font-size: 11px;
+  color: var(--muted);
+  display: block;
+  margin-top: 2px;
+}
+
+/* SPEC TABLE */
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  font-size: 14px;
+}
+.spec-table th {
+  text-align: left;
+  padding: 12px 16px;
+  color: var(--muted);
+  font-weight: 500;
+  border-bottom: 0.5px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+.spec-table td {
+  padding: 14px 16px;
+  border-bottom: 0.5px solid var(--border);
+  color: var(--text);
+}
+.spec-table tr:hover td { background: var(--bg3); }
+.spec-table .val { color: #fff; font-weight: 500; }
+
+/* INSTALL STEPS */
+.install-steps {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.install-step {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 1.5rem;
+  padding-bottom: 2.5rem;
+  position: relative;
+}
+
+.install-step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 23px;
+  top: 48px;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+
+.step-num-circle {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+
+.step-body h4 {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.step-body p {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.code-snippet {
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  color: var(--text);
+  line-height: 1.8;
+  overflow-x: auto;
+}
+
+.code-snippet .cm { color: var(--muted); }
+.code-snippet .kw { color: var(--teal); }
+.code-snippet .st { color: var(--amber); }
+
+/* BADGES */
+.badge-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.badge-blue { background: var(--blue-dim); color: #7aabf7; }
+.badge-teal { background: var(--teal-dim); color: #5ddbb8; }
+.badge-amber { background: var(--amber-dim); color: #f5c060; }
+.badge-red { background: var(--red-dim); color: #f07070; }
+
+/* DIVIDER */
+.divider {
+  border: none;
+  border-top: 0.5px solid var(--border);
+  margin: 0;
+}
+
+/* FOOTER */
+footer {
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  border-top: 0.5px solid var(--border);
+}
+footer strong { color: var(--text); }
+
+/* HIGHLIGHT */
+.hl-blue { color: var(--blue); }
+.hl-teal { color: var(--teal); }
+.hl-amber { color: var(--amber); }
+
+/* RESPONSIVE */
+@media(max-width: 680px) {
+  nav { padding: 1rem; }
+  .nav-links { display: none; }
+  .big-block { grid-template-columns: 1fr; gap: 2rem; }
+  .big-block.reverse { direction: ltr; }
+}
+
+/* SCROLL ANIMATIONS */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-dot"></div>
+    T_Os Linux
+  </div>
+  <ul class="nav-links">
+    <li><a href="#ozellikler">Özellikler</a></li>
+    <li><a href="#oyun">Oyun</a></li>
+    <li><a href="#siber">Siber Güvenlik</a></li>
+    <li><a href="#kurulum">Kurulum</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-eyebrow">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+    v1.0 "Temiz Başlangıç" — Ubuntu 24.04 LTS tabanlı
+  </div>
+
+  <h1>Linux'u <span>zorlaştırmak</span><br>zorunda değilsin.</h1>
+
+  <p class="hero-desc">
+    T_Os — günlük kullanım, oyun ve siber güvenlik için hazırlanmış, sade ve güçlü bir Linux dağıtımı. KDE Plasma ile gelir, kurulumu beş dakika sürer.
+  </p>
+
+  <div class="hero-btns">
+    <a href="https://drive.google.com/drive/folders/1APIZeyLOv1o0acv9jrfCKH58brmu8Ph5?usp=share_link" class="btn-primary" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 1v9m0 0L5 7m3 3 3-3M1 13h14"/></svg>
+      İndir &amp; Kur
+    </a>
+    <a href="#ozellikler" class="btn-ghost">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5v.5"/></svg>
+      Daha fazla bilgi
+    </a>
+  </div>
+
+  <div class="tags-scroll">
+    <div class="tag">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="9" rx="1"/><path d="M5 14h6"/></svg>
+      KDE Plasma 6
+    </div>
+    <div class="tag">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 13l4-4 3 3 5-7"/></svg>
+      Steam + Proton hazır
+    </div>
+    <div class="tag">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zm0 0v6m0 0 3-3m-3 3L5 5"/></svg>
+      Güvenlik araçları dahil
+    </div>
+    <div class="tag">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 8h14M8 1v14"/></svg>
+      APT + Flatpak + Snap
+    </div>
+    <div class="tag">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
+      Türkçe dil desteği
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<section id="ozellikler">
+  <p class="section-label reveal">Ne sunuyor?</p>
+  <h2 class="section-title reveal">Her şey hazır,<br>sen sadece kullan.</h2>
+  <p class="section-sub reveal">T_Os kurduğunda çalışmaya hazır bir sistem bulursun. Sürücü aramak, eklenti kurmak, saatlerce ayar yapmak yok.</p>
+
+  <div class="feature-grid" style="margin-top:3rem;">
+    <div class="feature-card reveal">
+      <div class="feature-icon icon-blue">🎮</div>
+      <h3>Oyun odaklı</h3>
+      <p>Steam, Lutris, GameMode ve Proton-GE kutudan çıkar. Windows oyunlarının büyük çoğunluğu direkt çalışır.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon icon-red">🔒</div>
+      <h3>Siber güvenlik araçları</h3>
+      <p>Nmap, Wireshark, Metasploit gibi araçlar dahil. Hem öğrenmek hem test etmek için hazır ortam.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon icon-teal">⚡</div>
+      <h3>Hızlı ve hafif</h3>
+      <p>KDE Plasma optimize edilmiş şekilde gelir. 4 GB RAM ile bile akıcı çalışır, kaynak israfı yok.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon icon-amber">🛠️</div>
+      <h3>Hazır uygulamalar</h3>
+      <p>Firefox, LibreOffice, VLC, Thunderbird ve daha fazlası yüklü gelir. Hemen kullanmaya başlarsın.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon icon-teal">🔄</div>
+      <h3>Ubuntu tabanlı güven</h3>
+      <p>Ubuntu 24.04 LTS altyapısı sayesinde milyonlarca pakete erişim, uzun vadeli güvenlik güncellemeleri.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon icon-blue">🌍</div>
+      <h3>Türkçe desteği</h3>
+      <p>Kurulumdan masaüstüne her şey Türkçe. Dil paketi, klavye düzeni, bölge ayarları hazır.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="oyun">
+  <p class="section-label reveal">Oyun</p>
+  <h2 class="section-title reveal">Linux'ta <span class="hl-amber">oyun</span> oynamak<br>artık sorun değil.</h2>
+  <p class="section-sub reveal">T_Os, en popüler oyun araçlarını kutudan çıkarır. Bir komut bile yazman gerekmeyebilir.</p>
+
+  <div class="big-block">
+    <div class="reveal">
+      <h3 style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:1rem;">Neler dahil?</h3>
+
+      <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:36px;height:36px;background:var(--amber-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🎮</div>
+          <div>
+            <strong style="color:#fff;font-size:15px;">Steam + Proton</strong>
+            <p style="font-size:13px;color:var(--muted);margin-top:2px;">Windows oyunlarını Linux'ta çalıştıran Valve'ın teknolojisi. Binlerce oyun destekleniyor.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:36px;height:36px;background:var(--teal-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">⚡</div>
+          <div>
+            <strong style="color:#fff;font-size:15px;">GameMode</strong>
+            <p style="font-size:13px;color:var(--muted);margin-top:2px;">Oyun açıkken CPU ve GPU'nu otomatik performans moduna alır. Arka plan işlemleri kısıtlanır.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:36px;height:36px;background:var(--blue-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🕹️</div>
+          <div>
+            <strong style="color:#fff;font-size:15px;">Lutris</strong>
+            <p style="font-size:13px;color:var(--muted);margin-top:2px;">GOG, Epic, Battle.net gibi platformlardaki oyunları da yönetir. Kurulumu grafiksel arayüzden yaparsın.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:36px;height:36px;background:var(--red-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🖥️</div>
+          <div>
+            <strong style="color:#fff;font-size:15px;">MangoHud</strong>
+            <p style="font-size:13px;color:var(--muted);margin-top:2px;">Oyun içinde FPS, CPU/GPU sıcaklık ve kullanım göstergesi. Performansını gerçek zamanlı izle.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="badge-row">
+        <span class="badge badge-amber">Steam Deck uyumlu</span>
+        <span class="badge badge-teal">Vulkan destekli</span>
+        <span class="badge badge-blue">NVIDIA / AMD / Intel</span>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="mock-screen">
+        <div class="mock-bar">
+          <div class="mock-dot" style="background:#e05555;"></div>
+          <div class="mock-dot" style="background:#f0a830;"></div>
+          <div class="mock-dot" style="background:#30c9a0;"></div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-left:8px;">konsole — T_Os</span>
+        </div>
+        <div class="mock-content">
+          <div class="terminal-line"><span class="t-prompt">tos@pc</span><span class="t-cmd"> ~ $ sudo apt install steam lutris gamemode mangohud</span></div>
+          <div class="terminal-line t-out">Paketler indiriliyor... [████████████] %100</div>
+          <div class="terminal-line t-ok">✓ steam kuruldu</div>
+          <div class="terminal-line t-ok">✓ lutris kuruldu</div>
+          <div class="terminal-line t-ok">✓ gamemode kuruldu</div>
+          <div class="terminal-line t-ok">✓ mangohud kuruldu</div>
+          <div class="terminal-line" style="margin-top:8px;"><span class="t-prompt">tos@pc</span><span class="t-cmd"> ~ $ gamemoderun %command%</span></div>
+          <div class="terminal-line t-out">» GameMode aktif — performans modu açık</div>
+          <div class="terminal-line t-ok">» FPS: 144 | CPU: %31 | GPU: %78 | 62°C</div>
+          <div class="terminal-line" style="margin-top:4px;"><span class="t-prompt">tos@pc</span><span class="t-cmd"> ~ $ _</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="siber">
+  <p class="section-label reveal">Siber Güvenlik</p>
+  <h2 class="section-title reveal">Hem öğren, <span class="hl-teal">hem test et.</span></h2>
+  <p class="section-sub reveal">T_Os, siber güvenlik araçlarını meraklılar ve profesyoneller için hazır şekilde sunar. Kali'ye gerek yok.</p>
+
+  <div class="big-block reverse" style="margin-top:3rem;">
+    <div class="reveal">
+      <div class="mock-screen">
+        <div class="mock-bar">
+          <div class="mock-dot" style="background:#e05555;"></div>
+          <div class="mock-dot" style="background:#f0a830;"></div>
+          <div class="mock-dot" style="background:#30c9a0;"></div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-left:8px;">siber güvenlik — T_Os</span>
+        </div>
+        <div class="mock-content">
+          <div class="terminal-line"><span class="t-prompt">tos@pc</span><span class="t-cmd"> ~ $ nmap -sV 192.168.1.1</span></div>
+          <div class="terminal-line t-out">PORT     STATE  SERVICE    VERSION</div>
+          <div class="terminal-line t-ok">22/tcp   open   ssh        OpenSSH 8.9</div>
+          <div class="terminal-line t-ok">80/tcp   open   http       nginx 1.24</div>
+          <div class="terminal-line t-warn">443/tcp  open   https      (self-signed)</div>
+          <div class="terminal-line t-err">8080/tcp open   http-proxy !</div>
+          <div style="margin-top:10px;" class="terminal-line"><span class="t-prompt">tos@pc</span><span class="t-cmd"> ~ $ wireshark &</span></div>
+          <div class="terminal-line t-out">» Wireshark başlatıldı — paket yakalamaya hazır</div>
+          <div class="terminal-line" style="margin-top:4px;"><span class="t-prompt">tos@pc</span><span class="t-cmd"> ~ $ _</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <h3 style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:1rem;">Dahil araçlar</h3>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem;">
+        <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:10px;padding:12px;">
+          <div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:3px;">🔍 Nmap</div>
+          <div style="font-size:12px;color:var(--muted);">Ağ tarama & port keşfi</div>
+        </div>
+        <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:10px;padding:12px;">
+          <div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:3px;">🦈 Wireshark</div>
+          <div style="font-size:12px;color:var(--muted);">Paket analizi</div>
+        </div>
+        <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:10px;padding:12px;">
+          <div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:3px;">💣 Metasploit</div>
+          <div style="font-size:12px;color:var(--muted);">Penetrasyon testi</div>
+        </div>
+        <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:10px;padding:12px;">
+          <div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:3px;">🔑 Hashcat</div>
+          <div style="font-size:12px;color:var(--muted);">Parola kırma & test</div>
+        </div>
+        <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:10px;padding:12px;">
+          <div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:3px;">📡 Aircrack-ng</div>
+          <div style="font-size:12px;color:var(--muted);">WiFi güvenlik testi</div>
+        </div>
+        <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:10px;padding:12px;">
+          <div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:3px;">🕵️ Burp Suite</div>
+          <div style="font-size:12px;color:var(--muted);">Web uygulama testi</div>
+        </div>
+      </div>
+
+      <div class="badge-row">
+        <span class="badge badge-red">Etik kullanım</span>
+        <span class="badge badge-teal">CTF'e hazır</span>
+        <span class="badge badge-blue">Öğrenci dostu</span>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;">⚠️ Bu araçlar yalnızca kendi sistemlerinizde veya izinli ortamlarda kullanılmalıdır.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section>
+  <p class="section-label reveal">Uygulamalar</p>
+  <h2 class="section-title reveal">Günlük hayatın her şeyi<br>zaten kurulu.</h2>
+
+  <div class="apps-grid">
+    <div class="app-card reveal"><span class="app-icon">🌐</span><span class="app-name">Firefox</span><span class="app-cat">Tarayıcı</span></div>
+    <div class="app-card reveal"><span class="app-icon">📧</span><span class="app-name">Thunderbird</span><span class="app-cat">E-posta</span></div>
+    <div class="app-card reveal"><span class="app-icon">📄</span><span class="app-name">LibreOffice</span><span class="app-cat">Ofis</span></div>
+    <div class="app-card reveal"><span class="app-icon">🎵</span><span class="app-name">Elisa</span><span class="app-cat">Müzik</span></div>
+    <div class="app-card reveal"><span class="app-icon">🎬</span><span class="app-name">VLC</span><span class="app-cat">Video</span></div>
+    <div class="app-card reveal"><span class="app-icon">🖼️</span><span class="app-name">Gwenview</span><span class="app-cat">Fotoğraf</span></div>
+    <div class="app-card reveal"><span class="app-icon">💾</span><span class="app-name">Dolphin</span><span class="app-cat">Dosyalar</span></div>
+    <div class="app-card reveal"><span class="app-icon">📦</span><span class="app-name">Discover</span><span class="app-cat">Uygulama mağazası</span></div>
+    <div class="app-card reveal"><span class="app-icon">🖥️</span><span class="app-name">Konsole</span><span class="app-cat">Terminal</span></div>
+    <div class="app-card reveal"><span class="app-icon">🎮</span><span class="app-name">Steam</span><span class="app-cat">Oyun</span></div>
+    <div class="app-card reveal"><span class="app-icon">🖨️</span><span class="app-name">CUPS</span><span class="app-cat">Yazıcı</span></div>
+    <div class="app-card reveal"><span class="app-icon">⚙️</span><span class="app-name">KDE Ayarlar</span><span class="app-cat">Sistem</span></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section>
+  <p class="section-label reveal">Teknik</p>
+  <h2 class="section-title reveal">Neler var altında?</h2>
+
+  <table class="spec-table reveal">
+    <thead>
+      <tr>
+        <th>Bileşen</th>
+        <th>Detay</th>
+        <th>Notlar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Temel dağıtım</td><td class="val">Ubuntu 24.04 LTS</td><td style="color:var(--muted)">2029'a kadar destek</td></tr>
+      <tr><td>Çekirdek</td><td class="val">Linux 6.8 LTS</td><td style="color:var(--muted)">HWE kerneli dahil</td></tr>
+      <tr><td>Masaüstü</td><td class="val">KDE Plasma 6.0</td><td style="color:var(--muted)">Wayland + X11</td></tr>
+      <tr><td>Ekran yöneticisi</td><td class="val">SDDM</td><td style="color:var(--muted)">KDE temalı</td></tr>
+      <tr><td>Dosya sistemi</td><td class="val">ext4 / Btrfs</td><td style="color:var(--muted)">Kurulumda seçilebilir</td></tr>
+      <tr><td>Paket yöneticisi</td><td class="val">APT + Flatpak</td><td style="color:var(--muted)">Snap opsiyonel</td></tr>
+      <tr><td>Kurulum sihirbazı</td><td class="val">Calamares</td><td style="color:var(--muted)">Türkçe dil desteği</td></tr>
+      <tr><td>Mimari</td><td class="val">x86_64 (64-bit)</td><td style="color:var(--muted)">ARM yakında</td></tr>
+      <tr><td>ISO boyutu</td><td class="val">~3.8 GB</td><td style="color:var(--muted)">Tüm araçlar dahil</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="divider">
+
+<section id="kurulum">
+  <p class="section-label reveal">Kurulum</p>
+  <h2 class="section-title reveal">5 adımda<br><span class="hl-blue">T_Os kurulumu.</span></h2>
+  <p class="section-sub reveal">Linux kurmak karmaşık değil. Adım adım anlattık.</p>
+
+  <div class="install-steps" style="margin-top:3rem;">
+    <div class="install-step reveal">
+      <div class="step-num-circle">1</div>
+      <div class="step-body">
+        <h4>ISO dosyasını indir</h4>
+        <p>T_Os'un ISO dosyasını resmi siteden veya torrent üzerinden indir. SHA256 ile doğrula.</p>
+        <div class="code-snippet"><span class="kw">sha256sum</span> T_Os-1.0-amd64.iso</div>
+      </div>
+    </div>
+
+    <div class="install-step reveal">
+      <div class="step-num-circle">2</div>
+      <div class="step-body">
+        <h4>USB belleğe yaz</h4>
+        <p>Balena Etcher, Rufus (Windows) veya <code>dd</code> komutu ile ISO'yu USB'ye yaz.</p>
+        <div class="code-snippet"><span class="cm"># Linux üzerinde:</span>
+<span class="kw">sudo dd</span> if=T_Os-1.0-amd64.iso of=/dev/sdX bs=4M status=progress</div>
+      </div>
+    </div>
+
+    <div class="install-step reveal">
+      <div class="step-num-circle">3</div>
+      <div class="step-body">
+        <h4>USB'den başlat (boot)</h4>
+        <p>Bilgisayarı yeniden başlat, BIOS/UEFI'de USB'yi ilk sıraya al. F2, F12 veya Del tuşu genellikle işe yarar.</p>
+      </div>
+    </div>
+
+    <div class="install-step reveal">
+      <div class="step-num-circle">4</div>
+      <div class="step-body">
+        <h4>Calamares kurulum sihirbazı</h4>
+        <p>T_Os'u "Dene" veya "Kur" seçenekleriyle karşılanırsın. Kur'a tıkla, dili ve bölgeyi seç, disk bölümlendirmeyi yap.</p>
+      </div>
+    </div>
+
+    <div class="install-step reveal">
+      <div class="step-num-circle">5</div>
+      <div class="step-body">
+        <h4>Yeniden başlat & kullan!</h4>
+        <p>Kurulum tamamlandıktan sonra USB'yi çıkar, yeniden başlat. Oyun araçları ve güvenlik yazılımları zaten seni bekliyor.</p>
+        <div class="code-snippet"><span class="cm"># İlk güncellemeleri almak için:</span>
+<span class="kw">sudo apt update</span> && <span class="kw">sudo apt upgrade</span> -y</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<footer>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:20px;margin-bottom:0.5rem;color:#fff;">T_Os</div>
+  <p>Ubuntu 24.04 LTS tabanlı · KDE Plasma 6 · Açık kaynak</p>
+  <p style="margin-top:0.5rem;font-size:12px;">Siber güvenlik araçlarını yalnızca yasal ve etik amaçlarla kullanın.</p>
+  <p style="margin-top:1.5rem;color:#444;">Made with ❤️ for the community</p>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
